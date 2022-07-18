@@ -1,0 +1,6 @@
+{
+        "style_guide": "tidyverse_style",
+        "scope": "tokens",
+        "indentation": 2,
+        "strict": "TRUE",
+}
