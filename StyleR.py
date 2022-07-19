@@ -4,10 +4,6 @@ import os
 import subprocess
 
 
-def read_user_settings():
-    return sublime.load_settings('StyleR.sublime-settings')
-
-
 class StyleROnSave(sublime_plugin.EventListener):
 
     defaults = {
@@ -18,7 +14,7 @@ class StyleROnSave(sublime_plugin.EventListener):
     }
 
     def get_settings(self):
-        user_settings = read_user_settings()
+        user_settings = sublime.load_settings('StyleR.sublime-settings')
         active = {k: user_settings.get(k, v) for k, v in self.defaults.items()}
 
         return active
@@ -28,9 +24,9 @@ class StyleROnSave(sublime_plugin.EventListener):
         if not view.match_selector(0, self.defaults.get('selector')):
             return 0
 
-        active_settings = self.get_settings()
+        settings = self.get_settings()
 
-        if active_settings.get('on_save') is not True:
+        if settings.get('on_save') is not True:
             return 0
 
         filepath = view.file_name()
@@ -38,7 +34,7 @@ class StyleROnSave(sublime_plugin.EventListener):
         config = ", ".join(
             [
                 "{0} = {1}".format(k, v)
-                for k, v in active_settings.items()
+                for k, v in settings.items()
                 if k in ['indent_by', "strict"]
             ]
         )
