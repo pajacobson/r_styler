@@ -1,6 +1,5 @@
 {
-        "style_guide": "tidyverse_style",
-        "scope": "tokens",
-        "indentation": 2,
-        "strict": "TRUE",
+        "indent_by": 2,
+        "strict": "TRUE",  // R logical value: TRUE or FALSE
+        "on_save": true,
 }
