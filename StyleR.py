@@ -18,28 +18,27 @@ class StyleROnSave(sublime_plugin.EventListener):
     }
 
     def get_settings(self):
-
         user_settings = read_user_settings()
         active = {k: user_settings.get(k, v) for k, v in self.defaults.items()}
 
         return active
 
     def on_post_save_async(self, view):
-        selector = "{0}".format(self.defaults.get('selector'))
-        print(selector)
-        if not view.match_selector(0, selector):
+
+        if not view.match_selector(0, self.defaults.get('selector')):
             return 0
 
-        self.defaults.update(self.get_settings())
+        active_settings = self.get_settings()
+
+        if active_settings.get('on_save') is not True:
+            return 0
+
         filepath = view.file_name()
-
-        if self.defaults.get('on_save') is not True:
-            return 0
 
         config = ", ".join(
             [
                 "{0} = {1}".format(k, v)
-                for k, v in self.defaults.items()
+                for k, v in active_settings.items()
                 if k in ['indent_by', "strict"]
             ]
         )
