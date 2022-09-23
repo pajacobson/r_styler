@@ -10,7 +10,9 @@ class StyleROnSave(sublime_plugin.EventListener):
         "indent_by": 2,
         "strict": "TRUE",
         "on_save": True,
-        "selector": "source.r | source.Rmd",
+        "selector": "source.r, \
+            text.html.markdown.rmarkdown, \
+            text.html.markdown.quarto",
     }
 
     def get_settings(self):
@@ -45,9 +47,7 @@ class StyleROnSave(sublime_plugin.EventListener):
                 "--slave",
                 "--vanilla",
                 "-e",
-                "library(styler);style_file('{0}', {1})".format(
-                    filepath, config
-                ),
+                "styler::style_file('{0}', {1})".format(filepath, config),
             ],
             cwd=os.path.dirname(filepath),
         )
